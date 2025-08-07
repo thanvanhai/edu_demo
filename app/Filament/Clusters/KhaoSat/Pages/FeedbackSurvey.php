@@ -89,6 +89,10 @@ class FeedbackSurvey extends Page implements HasForms
         ]);
 
         foreach ($data['answers'] ?? [] as $questionId => $answer) {
+            // Bỏ qua nếu không có câu trả lời
+            if (blank($answer)) {
+                continue;
+            }
             SurveyAnswer::create([
                 'response_id' => $response->id,
                 'question_id' => $questionId,
@@ -101,6 +105,6 @@ class FeedbackSurvey extends Page implements HasForms
             ->success()
             ->send();
 
-        $this->redirect('/');
+        $this->redirect("/admin/survey/survey-results?surveyId={$this->survey->id}");
     }
 }

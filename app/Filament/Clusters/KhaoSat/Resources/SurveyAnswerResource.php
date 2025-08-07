@@ -26,7 +26,7 @@ class SurveyAnswerResource extends Resource
     protected static ?string $label = 'Câu trả lời khảo sát';
     protected static ?string $pluralLabel = 'Danh sách câu trả lời khảo sát';
     protected static ?string $slug = 'survey-answers';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
     protected static bool $shouldRegisterNavigation = true;
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top; // Or SubNavigationPosition::Start
 

@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Services\CollectionExport;
+
 
 /**
  * Kiểm tra quyền của user (hỗ trợ cả quyền Shield mặc định và quyền custom).
@@ -39,5 +43,15 @@ if (! function_exists('format_date')) {
     function format_date($date, $format = 'd/m/Y')
     {
         return Carbon::parse($date)->format($format);
+    }
+}
+
+if (!function_exists('export_collection')) {
+    function export_collection(Collection $data, string $filename = 'export.xlsx')
+    {
+        return Excel::download(
+            new CollectionExport($data),
+            $filename
+        );
     }
 }
