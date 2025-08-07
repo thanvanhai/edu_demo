@@ -12,6 +12,7 @@ use App\Models\Survey\{Survey, SurveyResponse, SurveyAnswer};
 use Filament\Forms\Form;
 use Filament\Forms\Components\{Wizard, Wizard\Step, Actions\Action, TextInput, Textarea, Select, Radio, CheckboxList, Placeholder};
 use Filament\Notifications\Notification;
+use IbrahimBougaoua\FilamentRatingStar\Forms\Components\RatingStar;
 
 class FeedbackSurvey extends Page implements HasForms
 {
@@ -75,6 +76,8 @@ class FeedbackSurvey extends Page implements HasForms
             'select' => Select::make($field)->label($q->question)->options($options)->required($q->is_required),
             'radio' => Radio::make($field)->label($q->question)->options($options)->required($q->is_required),
             'checkbox' => CheckboxList::make($field)->label($q->question)->options($options)->required($q->is_required),
+            'rating' => RatingStar::make($field)
+                ->label($q->question)->required($q->is_required),
             default => Placeholder::make("unk_{$q->id}")->content('Loại câu hỏi không hỗ trợ'),
         };
     }

@@ -14,6 +14,7 @@
         "filament/filament": "^3.3",
         "google/analytics-data": "0.21",
         "google/apiclient": "^2.18",
+        "ibrahimbougaoua/filament-rating-star": "dev-main",
         "kalnoy/nestedset": "^6.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
@@ -86,6 +87,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

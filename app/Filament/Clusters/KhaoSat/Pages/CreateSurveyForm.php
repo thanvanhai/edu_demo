@@ -115,12 +115,21 @@ class CreateSurveyForm extends Page implements HasForms
 
                                             Select::make('type')
                                                 ->label('Loại câu hỏi')
+                                                // ->options([
+                                                //     'text' => 'Text',
+                                                //     'textarea' => 'Textarea',
+                                                //     'select' => 'Select (dropdown)',
+                                                //     'radio' => 'Radio',
+                                                //     'checkbox' => 'Checkbox',
+                                                //     'rating' => 'Rating (stars)',
+                                                // ])
                                                 ->options([
-                                                    'text' => 'Text',
-                                                    'textarea' => 'Textarea',
-                                                    'select' => 'Select (dropdown)',
-                                                    'radio' => 'Radio',
-                                                    'checkbox' => 'Checkbox',
+                                                    'text' => 'Văn bản một dòng',
+                                                    'textarea' => 'Văn bản nhiều dòng',
+                                                    'select' => 'Chọn từ danh sách',
+                                                    'radio' => 'Chọn một đáp án',
+                                                    'checkbox' => 'Chọn nhiều đáp án',
+                                                    'rating' => 'Đánh giá (ngôi sao)',
                                                 ])
                                                 ->required()
                                                 ->reactive(),
