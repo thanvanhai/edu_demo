@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\{SelectColumn, TextColumn, BadgeColumn, ImageColumn};
 use Filament\Forms\Components\{TextInput, Select, Textarea, FileUpload, DateTimePicker};
 use Filament\Pages\SubNavigationPosition;
+use Filament\Tables\Filters\SelectFilter;
 
 class TicketVehicleCardResource extends Resource
 {
@@ -97,6 +98,15 @@ class TicketVehicleCardResource extends Resource
                         'success' => 'resolved',
                         'gray' => 'closed',
                     ])
+                    ->formatStateUsing(function (string $state): string {
+                        return match ($state) {
+                            'open'        => 'Mở',
+                            'in_progress' => 'Đang xử lý',
+                            'resolved'    => 'Đã xử lý',
+                            'closed'      => 'Đóng',
+                            default       => ucfirst($state),
+                        };
+                    })
                     ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('ticket.department.name')
                     ->label('Phòng ban')
@@ -126,7 +136,25 @@ class TicketVehicleCardResource extends Resource
                     ->size(40)
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([])
+            ->filters([
+                SelectFilter::make('ticket_status')
+                    ->label('Trạng thái')
+                    ->options([
+                        'open'        => 'Mở',
+                        'in_progress' => 'Đang xử lý',
+                        'resolved'    => 'Đã xử lý',
+                        'closed'      => 'Đóng',
+                    ])
+                    ->query(function ($query, $data) {
+                        if (! isset($data['value']) || $data['value'] === 'all') {
+                            return $query; // không lọc
+                        }
+                        return $query->whereHas('ticket', function ($q) use ($data) {
+                            $q->where('status', $data['value']);
+                        });
+                    }),
+            ])
+            ->filtersFormColumns(2) // Số cột hiển thị trong form lọc
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),

@@ -69,7 +69,7 @@ class TicketResource extends Resource
                         'open' => 'Mở',
                         'in_progress' => 'Đang xử lý',
                         'resolved' => 'Đã xử lý',
-                        'closed' => 'Đã đóng',
+                        // 'closed' => 'Đã đóng',
                     ])
                     ->default('open'),
 
@@ -127,7 +127,16 @@ class TicketResource extends Resource
                     'warning' => 'in_progress',
                     'success' => 'resolved',
                     'gray' => 'closed',
-                ]),
+                ])
+                ->formatStateUsing(function (string $state): string {
+                    return match ($state) {
+                        'open'        => 'Mở',
+                        'in_progress' => 'Đang xử lý',
+                        'resolved'    => 'Đã xử lý',
+                        'closed'      => 'Đóng',
+                        default       => ucfirst($state),
+                    };
+                }),
                 TextColumn::make('user.name')->label('Người gửi')->searchable(),
                 TextColumn::make('assigned.name')->label('Người xử lý')->searchable(),
                 TextColumn::make('created_at')->label('Ngày tạo')->dateTime()->toggleable(isToggledHiddenByDefault: true),

@@ -8,6 +8,7 @@ use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Filament\Support\Enums\MaxWidth;
 
 class EditRole extends EditRecord
 {
@@ -15,6 +16,10 @@ class EditRole extends EditRecord
 
     public Collection $permissions;
 
+    public function getMaxContentWidth(): MaxWidth
+    {
+        return MaxWidth::Full;
+    }
     protected function getActions(): array
     {
         return [

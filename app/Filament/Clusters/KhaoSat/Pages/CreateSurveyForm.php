@@ -122,6 +122,8 @@ class CreateSurveyForm extends Page implements HasForms
                                                 //     'radio' => 'Radio',
                                                 //     'checkbox' => 'Checkbox',
                                                 //     'rating' => 'Rating (stars)',
+                                                //     'number' => 'Number',
+                                                //     'date' => 'Date',
                                                 // ])
                                                 ->options([
                                                     'text' => 'Văn bản một dòng',
@@ -130,9 +132,30 @@ class CreateSurveyForm extends Page implements HasForms
                                                     'radio' => 'Chọn một đáp án',
                                                     'checkbox' => 'Chọn nhiều đáp án',
                                                     'rating' => 'Đánh giá (ngôi sao)',
+                                                    'number' => 'Nhập số',
+                                                    'datetime' => 'Thời gian',
                                                 ])
                                                 ->required()
                                                 ->reactive(),
+                                            // Format chỉ hiển thị khi type là number hoặc datetime
+                                            Select::make('format')
+                                                ->label('Định dạng')
+                                                ->options(function (callable $get) {
+                                                    return match ($get('type')) {
+                                                        'number' => [
+                                                            'integer' => 'Số nguyên',
+                                                            'decimal' => 'Số thập phân',
+                                                        ],
+                                                        'datetime' => [
+                                                            'date' => 'Chỉ ngày',
+                                                            'time' => 'Chỉ giờ',
+                                                            'datetime' => 'Ngày và giờ',
+                                                        ],
+                                                        default => [],
+                                                    };
+                                                })
+                                                ->visible(fn(callable $get) => in_array($get('type'), ['number', 'datetime']))
+                                                ->required(fn(callable $get) => in_array($get('type'), ['number', 'datetime'])),
 
                                             Repeater::make('options')
                                                 ->label('Tùy chọn')
@@ -207,6 +230,7 @@ class CreateSurveyForm extends Page implements HasForms
                     'section_id' => $section->id,
                     'question' => $q['question'],
                     'type' => $q['type'],
+                    'format' => $q['format'] ?? null, // Chỉ lưu nếu có
                     'options' => in_array($q['type'], ['select', 'radio', 'checkbox']) ? json_encode($q['options']) : null,
                     'is_required' => $q['is_required'] ?? false,
                     'order' => $questionIndex + 1,

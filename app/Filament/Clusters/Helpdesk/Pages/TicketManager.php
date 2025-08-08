@@ -177,6 +177,7 @@ class TicketManager extends Page implements HasForms
             'code' => $data['code'], // Mã phiếu từ step 1
             'category_id' => $data['ticket_category_id'],
             'department_id' => $data['department_id'],
+            'title' => $category?->name ?? 'Phiếu hỗ trợ',
             'description' => $this->isVehicleCardCategory($data['ticket_category_id'])
                 ? $category?->description
                 : ($data['description'] ?? null),

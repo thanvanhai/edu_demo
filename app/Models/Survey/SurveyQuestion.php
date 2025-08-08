@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class SurveyQuestion extends Model
 {
     protected $table = 'survey_questions';
-    protected $fillable = ['section_id', 'question', 'type', 'options', 'is_required', 'order'];
+    protected $fillable = ['section_id', 'question', 'type', 'options', 'format', 'is_required', 'order'];
 
     protected $casts = [
         'options' => 'array',
