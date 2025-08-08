@@ -23,10 +23,10 @@ use Filament\Tables\Actions\{DeleteBulkAction, BulkActionGroup, DeleteAction, Ed
 class TicketCategoryResource extends Resource
 {
     protected static ?string $model = TicketCategory::class;
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-computer-desktop';
     protected static ?string $cluster = Helpdesk::class;
-    protected static ?string $title = 'Danh sách Loại sự cố';
-    protected static ?string $navigationLabel = 'Danh sách Loại sự cố';
+    protected static ?string $title = 'Danh sách Loại hỗ trợ';
+    protected static ?string $navigationLabel = 'Danh sách Loại hỗ trợ';
     protected static ?string $slug = 'ticket-categories';
     protected static ?int $navigationSort = 0;
     protected static bool $shouldRegisterNavigation = true;
@@ -37,7 +37,7 @@ class TicketCategoryResource extends Resource
     {
         return [
             TextInput::make('name')
-                ->label('Tên loại sự cố')
+                ->label('Tên loại hỗ trợ')
                 ->required()
                 ->maxLength(255),
 
@@ -65,7 +65,7 @@ class TicketCategoryResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->modalHeading('Sửa loại sự cố'),
+                    ->modalHeading('Sửa loại hỗ trợ'),
                 Tables\Actions\DeleteAction::make(),
                 TableAction::make('xem_log')
                     ->label('Lịch sử')
@@ -90,21 +90,21 @@ class TicketCategoryResource extends Resource
             ])
             ->headerActions([
                 CreateAction::make()
-                    ->label('Thêm loại sự cố')
+                    ->label('Thêm loại hỗ trợ')
                     ->icon('heroicon-o-plus')
                     ->color('primary')
-                    ->modalHeading('Thêm loại sự cố')
-                    ->modalButton('Lưu loại sự cố')
+                    ->modalHeading('Thêm loại hỗ trợ')
+                    ->modalButton('Lưu loại hỗ trợ')
                     ->createAnother(false) // 🔴 tắt nút "Lưu và tạo tiếp" mặc định
                     ->successNotification(
                         Notification::make()
                             ->title('Thành công')
-                            ->body('Loại sự cố đã được thêm thành công.')
+                            ->body('Loại hỗ trợ đã được thêm thành công.')
                             ->success()
                             ->icon('heroicon-o-check-circle')
                     ),
             ])
-            ->emptyStateHeading('Không có loại sự cố nào được tìm thấy')
+            ->emptyStateHeading('Không có loại hỗ trợ nào được tìm thấy')
             ->emptyStateDescription('Không tìm thấy dữ liệu phù hợp với bộ lọc hiện tại.');
     }
 

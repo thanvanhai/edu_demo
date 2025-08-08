@@ -23,6 +23,6 @@ class ListTicketCategories extends ListRecords
     }
     public function getTitle(): string
     {
-        return 'Danh sách loại sự cố';
+        return 'Danh sách loại hỗ trợ';
     }
 }
