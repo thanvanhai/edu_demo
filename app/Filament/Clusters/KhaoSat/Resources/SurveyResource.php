@@ -14,9 +14,10 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Pages\SubNavigationPosition;
-use Filament\Forms\Components\{TextInput, Textarea, Toggle};
+use Filament\Forms\Components\{TextInput, Textarea, Toggle, Select};
 use Filament\Tables\Columns\{TextColumn, IconColumn};
 use Filament\Tables\Actions\{Action as TableAction, EditAction, ActionGroup};
+use Illuminate\Support\HtmlString;
 
 class SurveyResource extends Resource
 {
@@ -40,6 +41,19 @@ class SurveyResource extends Resource
             Textarea::make('description')
                 ->label('Mô tả'),
 
+            Select::make('slug')
+                ->label('Đường dẫn (slug)')
+                ->required()
+                ->unique(ignoreRecord: true)
+                ->options([
+                    'feedback-survey-1' => 'Khảo sát số 1',
+                    'feedback-survey-2' => 'Khảo sát số 2',
+                    'feedback-survey-3' => 'Khảo sát số 3',
+                    'feedback-survey-4' => 'Khảo sát số 4',
+                    'feedback-survey-5' => 'Khảo sát số 5',
+                ])
+                ->helperText('Chọn đường dẫn sử dụng trong URL, ví dụ: /surveys/feedback-survey-1')
+                ->columnSpanFull(),
             Toggle::make('is_active')
                 ->label('Đang hoạt động')
                 ->default(true),
@@ -52,6 +66,14 @@ class SurveyResource extends Resource
             ->columns([
                 TextColumn::make('title')->label('Tiêu đề')->searchable(),
                 TextColumn::make('description')->label('Mô tả')->limit(30),
+                TextColumn::make('slug')
+                    ->label('Đường dẫn (slug)')
+                    ->formatStateUsing(fn($state) => new HtmlString(
+                        '<a href="' . url('/admin/survey/' . $state) . '" target="_blank" style="color:#2563eb !important; text-decoration: underline;">
+        🔗 ' . e($state) . '
+    </a>'
+                    ))
+                    ->html(),
                 IconColumn::make('is_active')->label('Kích hoạt')->boolean(),
                 TextColumn::make('created_at')->label('Ngày tạo')->dateTime()->toggleable(isToggledHiddenByDefault: true),
             ])

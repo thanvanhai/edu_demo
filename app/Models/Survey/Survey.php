@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 class Survey extends Model
 {
     protected $table = 'surveys';
-    protected $fillable = ['title', 'description', 'is_active', 'is_open'];
+    protected $fillable = ['title', 'description', 'is_active', 'is_open', 'slug'];
     protected $casts = [
         'is_open' => 'boolean',
     ];

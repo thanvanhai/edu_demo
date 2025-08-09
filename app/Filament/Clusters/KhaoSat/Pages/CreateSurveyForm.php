@@ -147,7 +147,7 @@ class CreateSurveyForm extends Page implements HasForms
                                                             'decimal' => 'Số thập phân',
                                                         ],
                                                         'datetime' => [
-                                                            'date' => 'Chỉ ngày',
+                                                            'date' => 'Chỉ ngày tháng năm',
                                                             'time' => 'Chỉ giờ',
                                                             'datetime' => 'Ngày và giờ',
                                                         ],

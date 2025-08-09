@@ -55,3 +55,22 @@ if (!function_exists('export_collection')) {
         );
     }
 }
+
+if (!function_exists('getDateTimeFormat')) {
+    /**
+     * Trả về định dạng PHP cho DateTimePicker dựa theo key format.
+     *
+     * @param string|null $formatKey
+     * @return string
+     */
+    function getDateTimeFormat(?string $formatKey): string
+    {
+        $formatMap = [
+            'date' => 'Y-m-d',
+            'time' => 'H:i',
+            'datetime' => 'Y-m-d H:i',
+        ];
+
+        return $formatMap[$formatKey] ?? 'Y-m-d H:i';
+    }
+}

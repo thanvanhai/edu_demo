@@ -10,7 +10,7 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use App\Models\Survey\{Survey, SurveyResponse, SurveyAnswer};
 use Filament\Forms\Form;
-use Filament\Forms\Components\{Wizard, Wizard\Step, Actions\Action, TextInput, Textarea, Select, Radio, CheckboxList, Placeholder, DateTimePicker};
+use Filament\Forms\Components\{Wizard, Wizard\Step, Actions\Action, TextInput, Textarea, Select, Radio, CheckboxList, Placeholder, DateTimePicker, DatePicker, TimePicker};
 use Filament\Notifications\Notification;
 use IbrahimBougaoua\FilamentRatingStar\Forms\Components\RatingStar;
 
@@ -83,12 +83,25 @@ class FeedbackSurvey extends Page implements HasForms
                 ->extraInputAttributes([
                     'step' => $q->format === 'integer' ? '1' : ($q->format ?? 'any'),
                 ]),
-            'datetime' => DateTimePicker::make($field)
-                ->label($q->question)
-                ->required($q->is_required)
-                ->withoutSeconds()
-                ->displayFormat($q->format ?? 'Y-m-d H:i')
-                ->format($q->format ?? 'Y-m-d H:i'), // định dạng lưu trữ
+            'datetime' => match ($q->format) {
+                'date' => DatePicker::make($field)
+                    ->label($q->question)
+                    ->required($q->is_required)
+                    ->displayFormat('d/m/Y')
+                    ->format(getDateTimeFormat('date')),
+
+                'time' => TimePicker::make($field)
+                    ->label($q->question)
+                    ->required($q->is_required)
+                    ->displayFormat('H:i')
+                    ->format(getDateTimeFormat('time')),
+
+                default => DateTimePicker::make($field) // mặc định nếu không rõ format
+                    ->label($q->question)
+                    ->required($q->is_required)
+                    ->displayFormat('d/m/Y H:i')
+                    ->format(getDateTimeFormat('datetime')),
+            },
             'rating' => RatingStar::make($field)
                 ->label($q->question)->required($q->is_required)
                 ->helperText("⭐: Rất không hài lòng
