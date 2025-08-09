@@ -65,6 +65,6 @@ Edit
 npm run build
 
 DB mẫu:
-"..\edu_demo\database\edu_demo_09082025.bak"
+"..\edu_demo\database\edu_demo.bak"
 
 Hỗ trợ – ChatGPT (OpenAI)
