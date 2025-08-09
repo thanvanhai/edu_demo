@@ -29,7 +29,8 @@ use Filament\Forms\Components\{
     Placeholder,
     DateTimePicker,
     DatePicker,
-    TimePicker
+    TimePicker,
+    FileUpload
 };
 use Filament\Notifications\Notification;
 use IbrahimBougaoua\FilamentRatingStar\Forms\Components\RatingStar;
@@ -86,7 +87,6 @@ abstract class FeedbackSurveyBase extends Page implements HasForms
             $this->form->fill();
         }
     }
-
 
     public function form(Form $form): Form
     {
@@ -151,12 +151,14 @@ abstract class FeedbackSurveyBase extends Page implements HasForms
             },
             'rating' => RatingStar::make($field)
                 ->label($q->question)->required($q->is_required)
-                ->helperText("⭐: Rất không hài lòng
-⭐⭐: Không hài lòng
-⭐⭐⭐: Bình thường/Không ý kiến
-⭐⭐⭐⭐: Khá hài lòng
-⭐⭐⭐⭐⭐: Rất hài lòng")
+                ->helperText("⭐: Rất không hài lòng ⭐⭐: Không hài lòng ⭐⭐⭐: Bình thường/Không ý kiến ⭐⭐⭐⭐: Khá hài lòng ⭐⭐⭐⭐⭐: Rất hài lòng")
                 ->extraAttributes(['style' => 'white-space: pre-line;']),
+            'file' => FileUpload::make($field)
+                ->label($q->question)
+                ->required($q->is_required)
+                ->directory('survey_uploads') // thư mục lưu file
+                ->maxSize(10240) // tối đa 10MB
+                ->preserveFilenames(),
             default => Placeholder::make("unk_{$q->id}")->content('Loại câu hỏi không hỗ trợ'),
         };
     }

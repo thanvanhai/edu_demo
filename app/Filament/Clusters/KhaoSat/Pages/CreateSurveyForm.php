@@ -124,6 +124,7 @@ class CreateSurveyForm extends Page implements HasForms
                                                 //     'rating' => 'Rating (stars)',
                                                 //     'number' => 'Number',
                                                 //     'date' => 'Date',
+                                                //     'file' =>'tệp đính kèm',
                                                 // ])
                                                 ->options([
                                                     'text' => 'Văn bản một dòng',
@@ -134,6 +135,7 @@ class CreateSurveyForm extends Page implements HasForms
                                                     'rating' => 'Đánh giá (ngôi sao)',
                                                     'number' => 'Nhập số',
                                                     'datetime' => 'Thời gian',
+                                                    'file' => 'Tệp đính kèm',
                                                 ])
                                                 ->required()
                                                 ->reactive(),
