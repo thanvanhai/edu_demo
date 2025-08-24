@@ -46,13 +46,12 @@ class KPIReportPage extends Page  implements HasForms
     public ?int $period_id = null;
     public ?string $periodName = null;
     public ?string $donviName = null;
+    public array $data = [];
 
     public static function canAccess(): bool
     {
         return userCan('xem báo cáo kpi', KpiTreeResource::class);
     }
-
-    public array $data = [];
 
     public function getMaxContentWidth(): MaxWidth
     {

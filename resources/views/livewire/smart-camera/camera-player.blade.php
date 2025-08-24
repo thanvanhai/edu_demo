@@ -1,4 +1,3 @@
-{{-- resources/views/livewire/smart-camera/camera-player.blade.php --}}
 <div class="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4 h-full flex flex-col">
 
     {{-- Header --}}
@@ -89,7 +88,7 @@
             @if($getState()['selectedCamera'])
                 <div class="flex justify-between">
                     <span>Camera ID:</span>
-                    <span>{{ $getState()['selectedCamera']['camera_id'] }}</span>
+                    <span>{{ $getState()['selectedCamera']['id'] }}</span>
                 </div>
                 @if($getState()['streamUrl'])
                     <div class="flex justify-between">

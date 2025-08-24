@@ -7,18 +7,18 @@
         
         @foreach($getState()['cameras'] as $camera)
             <div 
-                wire:click="selectCamera({{ $camera['id'] }})"
+                wire:click="selectCamera('{{ $camera['camera_id'] }}')"
                 class="group relative p-3 rounded-lg border cursor-pointer transition-all duration-200 hover:shadow-sm
-                    {{ isset($getState()['selectedCamera']) && $getState()['selectedCamera']['id'] === $camera['id'] 
+                    {{ isset($getState()['selectedCamera']) && $getState()['selectedCamera']['camera_id'] === $camera['camera_id'] 
                         ? 'border-primary-300 bg-primary-50 dark:bg-primary-900/20 dark:border-primary-600' 
                         : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:border-gray-300' }}"
             >
                 {{-- Camera Name --}}
                 <div class="font-medium text-sm text-gray-900 dark:text-gray-100 mb-1">
-                    {{ $camera['name'] }}
+                    {{ $camera['name'] ?? 'Camera ' . $camera['id'] }}
                 </div>
                 
-                {{-- Status Badge --}}
+                {{-- Status + Short ID --}}
                 <div class="flex items-center justify-between">
                     <span class="text-xs text-gray-500 dark:text-gray-400">
                         ID: {{ $camera['id'] }}
@@ -38,7 +38,7 @@
                 </div>
                 
                 {{-- Selected Indicator --}}
-                @if(isset($getState()['selectedCamera']) && $getState()['selectedCamera']['id'] === $camera['id'])
+                @if(isset($getState()['selectedCamera']) && $getState()['selectedCamera']['camera_id'] === $camera['camera_id'])
                     <div class="absolute inset-y-0 left-0 w-1 bg-primary-500 rounded-l-lg"></div>
                 @endif
             </div>
