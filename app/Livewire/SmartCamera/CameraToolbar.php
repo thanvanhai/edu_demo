@@ -19,7 +19,7 @@ class CameraToolbar extends Component
         'description' => '',
     ];
 
-    protected $listeners = ['refreshCameraList' => 'loadCameras'];
+    protected $listeners = ['refreshCameraList'];
 
     public function mount($cameras = [], $selectedCamera = null): void
     {
@@ -27,31 +27,9 @@ class CameraToolbar extends Component
         $this->selectedCamera = $selectedCamera;
     }
 
-    public function loadCameras(): void
+    public function refreshCameraList(): void
     {
-        try {
-            $response = Http::timeout(10)->get(env('SMART_CAMERA_API_URL') . '/cameras/');
-            
-            if ($response->ok()) {
-                $this->cameras = $response->json();
-                
-                // Dispatch event để parent component biết data đã được update
-                $this->dispatch('camerasUpdated', cameras: $this->cameras);
-                
-                Notification::make()
-                    ->title('Đã tải lại danh sách camera')
-                    ->success()
-                    ->send();
-            } else {
-                throw new \Exception('API returned error: ' . $response->status());
-            }
-        } catch (\Exception $e) {
-            Notification::make()
-                ->title('Không thể tải danh sách camera')
-                ->body($e->getMessage())
-                ->danger()
-                ->send();
-        }
+        // Toolbar không load dữ liệu trực tiếp, page sẽ làm việc này
     }
 
     public function openCreateCamera(): void
@@ -63,7 +41,6 @@ class CameraToolbar extends Component
 
     public function saveCamera(): void
     {
-        // Validate basic fields
         $this->validate([
             'formData.name' => 'required|min:3|max:50',
             'formData.stream_url' => 'required|url',
@@ -72,31 +49,28 @@ class CameraToolbar extends Component
 
         try {
             $response = Http::timeout(10)->post(env('SMART_CAMERA_API_URL') . '/cameras/', $this->formData);
-            
+
             if ($response->ok()) {
+                $cameraName = $this->formData['name']; // Lưu tạm
                 $this->showCreateModal = false;
                 $this->reset('formData');
-                
-                // Dispatch event để parent component biết cần refresh
+
+                // Dispatch event để page xử lý reload
                 $this->dispatch('cameraCreated');
                 $this->dispatch('refreshCameraList');
-                
+
                 Notification::make()
                     ->title('Thêm camera thành công')
-                    ->body('Camera "' . $this->formData['name'] . '" đã được thêm.')
+                    ->body('Camera "' . $cameraName . '" đã được thêm.')
                     ->success()
                     ->send();
-                    
-                // Auto reload cameras sau khi thêm thành công
-                $this->loadCameras();
-                
+
             } else {
                 $errorMessage = $response->json()['message'] ?? 'Lỗi không xác định';
                 throw new \Exception($errorMessage);
             }
         } catch (\Illuminate\Validation\ValidationException $e) {
-            // Validation errors sẽ được hiển thị tự động
-            throw $e;
+            throw $e; // Livewire sẽ hiển thị validation errors tự động
         } catch (\Exception $e) {
             Notification::make()
                 ->title('Không thể thêm camera')

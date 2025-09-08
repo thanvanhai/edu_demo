@@ -14,9 +14,12 @@ use Filament\Infolists\Contracts\HasInfolists;
 use Filament\Infolists\Concerns\InteractsWithInfolists;
 use Filament\Support\Enums\MaxWidth;
 use App\Livewire\SmartCamera\CameraToolbar;
+use Filament\Notifications\Notification;
 
 class SmartCamera_Manager extends Page implements HasInfolists
 {
+    use InteractsWithInfolists;
+
     protected static ?string $navigationIcon = 'heroicon-o-video-camera';
     protected static string $view = 'filament.clusters.smart-camera.pages.smart-camera-manager';
     protected static ?string $cluster = SmartCamera::class;
@@ -27,14 +30,13 @@ class SmartCamera_Manager extends Page implements HasInfolists
     protected static bool $shouldRegisterNavigation = true;
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
-    use InteractsWithInfolists;
-
     public array $cameras = [];
     public ?array $selectedCamera = null;
     public ?string $streamUrl = null;
+
     protected $listeners = [
         'refreshCameraList' => 'refreshData',
-        'cameraUpdated' => 'refreshData'
+        'cameraUpdated' => 'refreshData',
     ];
 
     public function getMaxContentWidth(): MaxWidth
@@ -44,18 +46,43 @@ class SmartCamera_Manager extends Page implements HasInfolists
 
     public function mount(): void
     {
-        $this->loadCameras(); // Load lại data
-
-        // Force refresh các ViewEntry
+        $this->loadCameras();
         $this->dispatch('$refresh');
     }
+
     public function loadCameras(): void
     {
-        $response = Http::get(env('SMART_CAMERA_API_URL') . '/cameras/');
-        if ($response->ok()) {
-            $this->cameras = $response->json();
+        try {
+            $response = Http::withoutVerifying()
+                ->timeout(5)
+                ->get(rtrim(env('SMART_CAMERA_API_URL'), '/') . '/cameras/');
+
+            if ($response->ok()) {
+                $this->cameras = $response->json();
+            } else {
+                $this->cameras = [];
+                Notification::make()
+                    ->title('Không thể tải danh sách camera')
+                    ->body('API trả về lỗi: ' . $response->status())
+                    ->danger()
+                    ->send();
+            }
+        } catch (\Exception $e) {
+            $this->cameras = [];
+            Notification::make()
+                ->title('Không thể kết nối tới API Camera')
+                ->body('Vui lòng kiểm tra server API và thử lại.')
+                ->danger()
+                ->send();
         }
     }
+
+    public function refreshData(): void
+    {
+        $this->loadCameras();
+        $this->dispatch('$refresh');
+    }
+
     public function selectCamera($cameraId): void
     {
         $camera = collect($this->cameras)->firstWhere('camera_id', $cameraId);
@@ -71,19 +98,16 @@ class SmartCamera_Manager extends Page implements HasInfolists
     {
         return $infolist
             ->schema([
-                // Toolbar: dùng Livewire component để quản lý modal
                 Section::make()
                     ->schema([
                         Livewire::make(CameraToolbar::class, [
                             'cameras' => $this->cameras,
                             'selectedCamera' => $this->selectedCamera,
-                        ])
-                            ->key('camera-toolbar-' . count($this->cameras)), // Force re-render khi cameras thay đổi,
+                        ])->key('camera-toolbar-' . count($this->cameras)),
                     ])
                     ->columns(1)
                     ->extraAttributes(['class' => 'mb-4']),
 
-                // Layout dưới: camera list + player (vẫn dùng Blade view)
                 Section::make()
                     ->schema([
                         ViewEntry::make('camera_list')
