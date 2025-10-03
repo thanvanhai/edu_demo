@@ -24,7 +24,7 @@ use Filament\Pages\SubNavigationPosition;
 use BezhanSalleh\FilamentShield\Traits\HasShieldFormComponents;
 use Spatie\Activitylog\Models\Activity;
 
-class KpiTreeResource extends Resource  
+class KpiTreeResource extends Resource
 {
     protected static ?string $model = KpiTree::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -32,6 +32,8 @@ class KpiTreeResource extends Resource
     protected static ?string $label = 'Quản lý KPI';
     protected static ?string $title = 'Phương Diện/Mục tiêu/Tiêu chí KPI';
     protected static ?string $navigationLabel = 'Phương Diện/Mục Tiêu/Tiêu chí';
+    protected static ?string $modelLabel = 'Phương Diện/Mục Tiêu/Tiêu chí';
+    protected static ?string $pluralModelLabel = 'Phương Diện/Mục Tiêu/Tiêu chí';
     protected static ?string $slug = 'kpi-tree';
     protected static ?int $navigationSort = 1;
     protected static bool $shouldRegisterNavigation = true;

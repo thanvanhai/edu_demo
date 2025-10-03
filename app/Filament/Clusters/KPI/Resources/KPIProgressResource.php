@@ -30,6 +30,8 @@ class KPIProgressResource extends Resource
     protected static ?string $label = 'Quản lý tiến độ KPI';
     protected static ?string $title = 'Danh Sách Tiến độ KPI';
     protected static ?string $navigationLabel = 'Danh sách Tiến độ';
+    protected static ?string $modelLabel = 'Danh Sách Tiến độ';
+    protected static ?string $pluralModelLabel = 'Danh Sách Tiến độ';
     protected static ?string $slug = 'kpi-progresstreelist';
     protected static ?int $navigationSort = 5;
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top; // Or SubNavigationPosition::Start

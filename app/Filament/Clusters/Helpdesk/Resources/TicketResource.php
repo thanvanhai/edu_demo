@@ -29,6 +29,8 @@ class TicketResource extends Resource
     protected static ?string $cluster = Helpdesk::class;
     protected static ?string $title = 'Danh sách Phiếu hỗ trợ';
     protected static ?string $navigationLabel = 'Danh sách Phiếu hỗ trợ';
+    protected static ?string $modelLabel = 'Danh sách Phiếu hỗ trợ';
+    protected static ?string $pluralModelLabel = 'Danh sách Phiếu hỗ trợ';
     protected static ?string $slug = 'tickets';
     protected static ?int $navigationSort = 2;
     protected static bool $shouldRegisterNavigation = true;
@@ -128,15 +130,15 @@ class TicketResource extends Resource
                     'success' => 'resolved',
                     'gray' => 'closed',
                 ])
-                ->formatStateUsing(function (string $state): string {
-                    return match ($state) {
-                        'open'        => 'Mở',
-                        'in_progress' => 'Đang xử lý',
-                        'resolved'    => 'Đã xử lý',
-                        'closed'      => 'Đóng',
-                        default       => ucfirst($state),
-                    };
-                }),
+                    ->formatStateUsing(function (string $state): string {
+                        return match ($state) {
+                            'open'        => 'Mở',
+                            'in_progress' => 'Đang xử lý',
+                            'resolved'    => 'Đã xử lý',
+                            'closed'      => 'Đóng',
+                            default       => ucfirst($state),
+                        };
+                    }),
                 TextColumn::make('user.name')->label('Người gửi')->searchable(),
                 TextColumn::make('assigned.name')->label('Người xử lý')->searchable(),
                 TextColumn::make('created_at')->label('Ngày tạo')->dateTime()->toggleable(isToggledHiddenByDefault: true),

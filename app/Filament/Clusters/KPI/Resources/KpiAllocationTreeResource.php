@@ -29,6 +29,8 @@ class KpiAllocationTreeResource extends Resource
     protected static ?string $cluster = KPI::class;
     protected static ?string $title = 'Danh sách Phân bổ KPI';
     protected static ?string $navigationLabel = 'Danh sách Phân bổ';
+    protected static ?string $modelLabel = 'Danh sách Phân bổ';
+    protected static ?string $pluralModelLabel = 'Danh sách Phân bổ';
     protected static ?string $slug = 'kpi-allocationtrees';
     protected static ?int $navigationSort = 3;
     protected static bool $shouldRegisterNavigation = true;
